@@ -1,0 +1,150 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+  <div class="row">
+    <div class="col-8 offset-2">
+      <h2><b><%= findListById.title %></b></h2>
+      <div class="card col-7 listing-card">
+        <img
+          src="<%= findListById.image.url %>"
+          class="card-img-top"
+          alt="Listing"
+          style="height: 20rem"
+        />
+        <div class="card-body">
+          <p class="card-text">
+            <i>Owned by <%= findListById.author.username %></i>
+          </p>
+          <p class="card-text"><%= findListById.description %></p>
+          <p class="card-text">
+            &#8377;<%= findListById.price.toLocaleString("en-IN") %>
+          </p>
+          <p class="card-text"><%= findListById.location %></p>
+          <p class="card-text"><%= findListById.country %></p>
+        </div>
+      </div>
+      <% if(currUser && currUser._id.equals(findListById.author._id)) { %>
+      <div class="btn-class">
+        <a href="/listing/<%= findListById._id %>/edit" class="edit-List-btn">
+          Edit</a
+        >
+        <form
+          method="post"
+          action="/listing/<%= findListById._id %>?_method=DELETE"
+        >
+          <button class="delete-btn">Delete</button>
+        </form>
+      </div>
+      <% } %> <% if(currUser) { %>
+      <form
+        action="/listing/<%= findListById._id %>/reviews"
+        method="post"
+        novalidate
+        class="needs-validation"
+      >
+        <h4>Reviews</h4>
+        <label for="rating" class="form-label">Rating</label>
+        <fieldset class="starability-slot">
+          <input
+            type="radio"
+            id="no-rate"
+            class="input-no-rate"
+            name="review[rating]"
+            value="1"
+            checked
+            aria-label="No rating."
+          />
+          <input
+            type="radio"
+            id="first-rate1"
+            name="review[rating]"
+            value="1"
+          />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input
+            type="radio"
+            id="first-rate2"
+            name="review[rating]"
+            value="2"
+          />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input
+            type="radio"
+            id="first-rate3"
+            name="review[rating]"
+            value="3"
+          />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input
+            type="radio"
+            id="first-rate4"
+            name="review[rating]"
+            value="4"
+          />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input
+            type="radio"
+            id="first-rate5"
+            name="review[rating]"
+            value="5"
+          />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+        <div class="">
+          <label class="form-label mt-2">Comments</label>
+          <textarea
+            name="review[comment]"
+            placeholder="Add Comments..."
+            class="form-control mb-2"
+            required
+          ></textarea>
+          <div class="invalid-feedback mb-2">Please leave a comment</div>
+        </div>
+        <button class="btn btn-outline-dark mb-5">Submit</button>
+      </form>
+      <% } %>
+      <hr />
+      <div class="row">
+        <% for(review of findListById.reviews) { %>
+        <div class="card col-5 ms-3 mb-3">
+          <div class="card-body">
+            <h5 class="card-title"><%= review.author.username %></h5>
+            <p
+              class="starability-result card-text"
+              data-rating="<%= review.rating %>"
+            ></p>
+            <h5 class="card-subtitle mb-2 text-body-secondary">
+              <%= review.comment %>
+            </h5>
+            <form
+              class="mb-3"
+              method="post"
+              action="/listing/<%= findListById._id %>/reviews/<%= review._id %>?_method=DELETE"
+            >
+              <button class="btn btn-dark">Delete</button>
+            </form>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <div class="col-7  mb-5">
+        <h3>Where you will be</h3>
+        <gmp-map
+          center="37.4220656,-122.0840897"
+          zoom="10"
+          map-id="DEMO_MAP_ID"
+          style="height: 400px"
+        >
+          <gmp-advanced-marker
+            position="37.4220656,-122.0840897"
+            title="Mountain View, CA"
+          ></gmp-advanced-marker>
+          <gmp-advanced-marker
+            position="47.648994,-122.3503845"
+            title="Seattle, WA"
+          ></gmp-advanced-marker
+        ></gmp-map>
+      </div>
+    </div>
+  </div>
+</body>
