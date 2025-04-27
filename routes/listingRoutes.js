@@ -5,7 +5,6 @@ const { isLoggedIn, isOwner } = require("../middleWare/middleWare");
 const multer = require("multer");
 const { storage } = require("../cloudConfig");
 const upload = multer({ storage });
-const { Client } = require("@googlemaps/google-maps-services-js");
 require("dotenv").config();
 
 router.get("/", (req, res) => {
