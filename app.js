@@ -96,7 +96,7 @@ app.all("*", (req, res, next) => {
 
 app.use((err, req, res, next) => {
   let { statusCode, message } = err;
-  res.status(statusCode).render("error.ejs", {message});
+  res.status(statusCode).render("errors.ejs", {message});
 });
 
 
